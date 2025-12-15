@@ -1,0 +1,17 @@
+version: '3'
+services:
+  web_app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    expose:
+      - "5000"
+
+  waf:
+    image: owasp/modsecurity-crs
+    ports:
+      - "80:80"
+    environment:
+      - BACKEND=http://web_app:5000
+    depends_on:
+      - web_app
